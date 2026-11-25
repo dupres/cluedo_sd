@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+
+    <!-- Affichage des erreurs de validation du formulaire -->
+    {{ form_errors(registrationForm) }}
+
+    {#
+        Formulaire généré à partir de RegistrationFormType.
+        form_row affiche le label, le champ et ses erreurs de validation.
+        form_end ajoute automatiquement le jeton CSRF caché.
+    #}
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.username) }}
+        {{ form_row(registrationForm.plainPassword.first) }}
+        {{ form_row(registrationForm.plainPassword.second) }}
+
+        <button type="submit">Créer mon compte</button>
+    {{ form_end(registrationForm) }}
+
+    <p>Déjà inscrit ? <a href="{{ path('app_login') }}">Connecte-toi</a>.</p>
+{% endblock %}

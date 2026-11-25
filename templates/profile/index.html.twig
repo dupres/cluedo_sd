@@ -1,0 +1,22 @@
+{%extends 'base.html.twig' %}
+
+{% block title %}Profile - {{parent()}}{% endblock %}
+    
+{% block body %}
+    <h1>Profile</h1>
+
+    <p>This page is only visible to logged-in users.</p>
+
+    <ul>
+        <li>Username: <strong>{{ user.username }}</strong></li>
+        <li>Email: {{ user.email }}</li>
+        <li>Roles: {{ user.roles|join(', ') }}</li>
+        <li>Registered on: {{ user.createdAt|date('d/m/Y at H:i') }}</li>
+    </ul>
+
+
+    <a href='{{path('app_home')}}'>Retour à l'accueil</a>
+    {# <a href="{{ path('app_profile_edit') }}">Edit Profile</a> #}
+    <a href='/logout'>Se déconnecter</a>
+{% endblock %}
+
