@@ -25,6 +25,9 @@ class Card
     #[ORM\Column(nullable: true)]
     private ?int $item_type_id = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $subtitle = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Card
     public function setItemTypeId(?int $item_type_id): static
     {
         $this->item_type_id = $item_type_id;
+
+        return $this;
+    }
+
+    public function getSubtitle(): ?string
+    {
+        return $this->subtitle;
+    }
+
+    public function setSubtitle(?string $subtitle): static
+    {
+        $this->subtitle = $subtitle;
 
         return $this;
     }
