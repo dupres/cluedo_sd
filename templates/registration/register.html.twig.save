@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+
+    {# {% form_theme form 'bootstrap_5_layout.html.twig' %} #}
+
+    <!-- Multiple : form_theme form with ['theme1', 'theme2'] , theme2 first -->
+
+    <!-- Affichage des erreurs de validation du formulaire -->
+    {{ form_errors(form) }}
+
+    {#
+        Formulaire généré à partir de RegistrationFormType.
+        form_row affiche le label, le champ et ses erreurs de validation.
+        form_end ajoute automatiquement le jeton CSRF caché.
+    #}
+    <!---
+    {{ form_start(form) }}
+
+        <table>
+            {# <tr>
+                {{ form_row(form.email, {
+                    label: 'Email',
+                    label_attr: {'placeholder': 'Entrez votre email', class: 'required'},
+                    attr: {'placeholder': 'Entrez votre email'}
+                }) }}
+            </tr> #}
+            <tr>
+                <td>{{ form_label(form.email, 'Votre email') }}</td>
+                <td>{{ form_widget(form.email) }}</td>
+                <td>{{ form_errors(form.email) }}</td>
+                <td>{{ form_help(form.email) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.username, 'Nom d\'utilisateur') }}</td>
+                <td>{{ form_widget(form.username) }}</td>
+                <td>{{ form_errors(form.username) }}</td>
+                <td>{{ form_help(form.username) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.plainPassword.first) }}</td>
+                <td>{{ form_widget(form.plainPassword.first) }}</td>
+                <td>{{ form_errors(form.plainPassword.first) }}</td>
+                <td>{{ form_help(form.plainPassword.first) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.plainPassword.second) }}</td>
+                <td>{{ form_widget(form.plainPassword.second) }}</td>
+                <td>{{ form_errors(form.plainPassword.second) }}</td>
+                <td>{{ form_help(form.plainPassword.second) }}</td>
+            </tr>
+        </table>
+        {# {{ form_row(form.email) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.plainPassword.first) }}
+        {{ form_row(form.plainPassword.second) }} #}
+
+        <button type="submit">Créer mon compte</button>
+    {{ form_end(form) }}
+    -->
+
+    {{ form(form, {method: 'POST'}) }}
+
+    <p>Déjà inscrit ? <a href="{{ path('app_login') }}">Connecte-toi</a>.</p>
+{% endblock %}
