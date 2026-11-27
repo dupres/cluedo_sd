@@ -1,47 +1,52 @@
 <?php
 
-namespace App\Controller\API;
+namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\CardRepository;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
+use App\Dto\CardFilter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
+#[Route('/api/cards', name:'api_cards_')]
 class CardsController extends AbstractController
 {
-    #[Route('/api/cards', name: 'api_cards', methods: ['GET'])]
-    public function GET(CardRepository $cardRepository): JsonResponse
+    // #[Route('/api/cards', name: 'api_cards', methods: ['GET'])]
+    // public function GET(CardRepository $cardRepository): JsonResponse
+    // {
+    //     $cards = [];
+    //     // if ($this->isGranted('ROLE_USER')) {
+    //         return $this->json($cardRepository->findAll());
+    //     // }else{
+    //     //     return $this->json([], 403);
+    //     // }
+
+    //     return $this->json($cards);
+    // }
+
+    #[Route('', name: 'list', methods: ['GET'])]
+    public function list(CardRepository $cardRepository, #[MapQueryString(validationFailedStatusCode: Response::HTTP_BAD_REQUEST)] ?CardFilter $filters=null): JsonResponse
     {
-        // $cards = [
-        //     ['id' => 1, 'name' => 'Card 1'],
-        //     ['id' => 2, 'name' => 'Card 2'],
-        //     ['id' => 3, 'name' => 'Card 3'],
-        // ];
-
-        $cards = [];
-        // if ($this->isGranted('ROLE_USER')) {
-            return $this->json($cardRepository->findAll());
-        // }else{
-        //     return $this->json([], 403);
-        // }
-
+        $cards = $cardRepository->findByFilters($filters);
         return $this->json($cards);
     }
 
-    #[Route('/api/cards/{id}', name: 'api_card', methods: ['GET'])]
-    public function GETCard(int $id, CardRepository $cardRepository): JsonResponse
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(int $id, CardRepository $cardRepository): JsonResponse
     {
         $card = $cardRepository->find($id);
-
         if (!$card) {
             return $this->json(['error' => 'Card not found'], 404);
         }
-
         return $this->json($card);
     }
 
-    #[Route('/api/cards/type/{type}', name: 'api_cards_by_type', methods: ['GET'])]
-    public function GETCardsByType(string $type, CardRepository $cardRepository): JsonResponse
+
+    #[Route('/type/{type}', name: 'listByType', methods: ['GET'])]
+    public function listByType(string $type, CardRepository $cardRepository): JsonResponse
     {
         $cards = $cardRepository->findBy(['type'=>$type]);
 
@@ -52,8 +57,8 @@ class CardsController extends AbstractController
         return $this->json($cards);
     }
 
-    #[Route('/api/cards/item-type/{itemTypeId}', name: 'api_cards_by_item_type', methods: ['GET'])]
-    public function GETCardsByItemType(int $itemTypeId, CardRepository $cardRepository  ): JsonResponse
+    #[Route('/item-type/{itemTypeId}', name: 'listByItemType', methods: ['GET'])]
+    public function listByItemType(int $itemTypeId, CardRepository $cardRepository  ): JsonResponse
     {
         $cards = $cardRepository->findBy(['item_type_id'=>$itemTypeId]);
 
@@ -64,8 +69,8 @@ class CardsController extends AbstractController
         return $this->json($cards);
     }
 
-    #[Route('/api/cards/name/{name}', name: 'api_cards_by_name', methods: ['GET'])]
-    public function GETCardsByName(string $name, CardRepository $cardRepository): JsonResponse
+    #[Route('/name/{name}', name: 'listByName', methods: ['GET'])]
+    public function listByName(string $name, CardRepository $cardRepository): JsonResponse
     {
         $card = $cardRepository->findBy(['name'=>$name]);
 
